@@ -6,6 +6,9 @@
         //whiteはデフォルトカラー
 		_Pos ("Pos", 2D) = "white" {}
 		_Col ("Col", 2D) = "white" {}
+		_Mag ("Mag", 2D) = "white" {}
+		_Mag_param ("Star brightness", Range(0, 500)) = 200
+		_Mag_min ("min brightness", Range(0, 1)) = 0.05
 	}
 	SubShader
 	{
@@ -38,6 +41,9 @@
             //Propertiesは再び宣言する必要あり
 			sampler2D _Pos;
 			sampler2D _Col;
+			sampler2D _Mag;
+			float _Mag_param;
+			float _Mag_min;
 			
             //今回はgeomで処理するので頂点データを横流し
             //本来はfragに橋渡しする作業
@@ -68,7 +74,7 @@
 				float3 c = tex2Dlod(_Col, float4(uv,0,0)).xyz;
 				if(length(p) < 0.1 && length(c) < 0.1) return;
 				
-				float sz = p.z > 55.7 || p.x < -66.9 ? 0.08 : 0.26;
+				float sz = tex2Dlod(_Mag, float4(uv,0,0)).x * _Mag_param + _Mag_min;
 				sz *= pow(determinant((float3x3)UNITY_MATRIX_M),1/3.0);
 				float aspectRatio = - UNITY_MATRIX_P[0][0] / UNITY_MATRIX_P[1][1];
 				v2f o;
