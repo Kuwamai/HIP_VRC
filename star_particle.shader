@@ -7,8 +7,8 @@
 		_Pos ("Pos", 2D) = "white" {}
 		_Col ("Col", 2D) = "white" {}
 		_Mag ("Mag", 2D) = "white" {}
-		_Mag_param ("Star brightness", Range(0, 500)) = 200
-		_Mag_min ("min brightness", Range(0, 1)) = 0.05
+		_Mag_param ("Star brightness", Range(0, 250)) = 100
+		_Mag_min ("min brightness", Range(0, 1)) = 0.025
 	}
 	SubShader
 	{
@@ -75,6 +75,10 @@
 				if(length(p) < 0.1 && length(c) < 0.1) return;
 				
 				float sz = tex2Dlod(_Mag, float4(uv,0,0)).x * _Mag_param + _Mag_min;
+				//VRモードだと2回処理が走って描画サイズが倍になる
+				//VR以外のカメラのとき、描画サイズを倍にすることで対処
+				if (abs(UNITY_MATRIX_P[0][2]) < 0.0001) sz *= 2;
+
 				sz *= pow(determinant((float3x3)UNITY_MATRIX_M),1/3.0);
 				float aspectRatio = - UNITY_MATRIX_P[0][0] / UNITY_MATRIX_P[1][1];
 				v2f o;
