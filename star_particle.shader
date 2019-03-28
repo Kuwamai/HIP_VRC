@@ -64,6 +64,16 @@
 				return asfloat(v);
 			}
             
+            //テクスチャからint値を取り出す
+            float3 unpack_int(float2 uv) {
+                float v = 0;
+                v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).r * 255.;
+                v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).g * 255.;
+                v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).b * 255.;
+                v /= 16777216;
+                return v;
+            }
+            
 			[maxvertexcount(3)]
 			void geom(triangle appdata IN[3], inout TriangleStream<v2f> stream) {
 				float2 uv = (IN[0].uv + IN[1].uv + IN[2].uv) / 3;
@@ -74,7 +84,7 @@
 				float3 c = tex2Dlod(_Col, float4(uv,0,0)).xyz;
 				if(length(p) < 0.1 && length(c) < 0.1) return;
 				
-				float sz = tex2Dlod(_Mag, float4(uv,0,0)).x * _Mag_param + _Mag_min;
+				float sz = unpack_int(uv) * _Mag_param + _Mag_min;
 				//VRモードだと2回処理が走って描画サイズが倍になる
 				//VR以外のカメラのとき、描画サイズを倍にすることで対処
 				if (abs(UNITY_MATRIX_P[0][2]) < 0.0001) sz *= 2;
