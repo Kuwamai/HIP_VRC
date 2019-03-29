@@ -5,9 +5,9 @@
 
 ## Usage
 1. [Releases](https://github.com/Kuwamai/HIP_VRC/releases)からUnitypackageをダウンロードします
-* Unity projectにUnitypackageをimportします
-* Star_particle.prefabをHierarchieに配置します
-* 星の大きさはInspectorで変更できます
+1. Unity projectにUnitypackageをimportします
+1. Star_particle.prefabをHierarchieに配置します
+1. 星の大きさはInspectorで変更できます
   * Mag_param
     * 星の大きさ
   * Mag_min
