@@ -2,8 +2,8 @@
 {
 	Properties
 	{
-        //テクスチャ読み込み
-        //whiteはデフォルトカラー
+		//テクスチャ読み込み
+		//whiteはデフォルトカラー
 		_Pos ("Pos", 2D) = "white" {}
 		_Col ("Col", 2D) = "white" {}
 		_Mag ("Mag", 2D) = "white" {}
@@ -29,30 +29,30 @@
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD0;
 			};
-            
-            //構造体
+			
+			//構造体
 			struct v2f
 			{
 				float2 uv : TEXCOORD0;
 				float4 vertex : SV_POSITION;
 				float3 color : TEXCOORD1;
 			};
-            
-            //Propertiesは再び宣言する必要あり
+			
+			//Propertiesは再び宣言する必要あり
 			sampler2D _Pos;
 			sampler2D _Col;
 			sampler2D _Mag;
 			float _Mag_param;
 			float _Mag_min;
 			
-            //今回はgeomで処理するので頂点データを横流し
-            //本来はfragに橋渡しする作業
+			//今回はgeomで処理するので頂点データを横流し
+			//本来はfragに橋渡しする作業
 			appdata vert (appdata v)
 			{
 				return v;
 			}
-            
-            //テクスチャからfloat値を取り出す
+			
+			//テクスチャからfloat値を取り出す
 			float3 unpack(float2 uv) {
 				float texWidth = 2048.0;
 				float2 e = float2(-1.0/texWidth/2, 1.0/texWidth/2);
@@ -63,17 +63,17 @@
 				uint3 v = v0 + v1 + v2 + v3;
 				return asfloat(v);
 			}
-            
-            //テクスチャからint値を取り出す
-            float3 unpack_int(float2 uv) {
-                float v = 0;
-                v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).r * 255.;
-                v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).g * 255.;
-                v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).b * 255.;
-                v /= 16777216;
-                return v;
-            }
-            
+			
+			//テクスチャからint値を取り出す
+			float3 unpack_int(float2 uv) {
+				float v = 0;
+				v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).r * 255.;
+				v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).g * 255.;
+				v *= 256.; v += tex2Dlod(_Mag, float4(uv,0,0)).b * 255.;
+				v /= 16777216;
+				return v;
+			}
+			
 			[maxvertexcount(3)]
 			void geom(triangle appdata IN[3], inout TriangleStream<v2f> stream) {
 				float2 uv = (IN[0].uv + IN[1].uv + IN[2].uv) / 3;
