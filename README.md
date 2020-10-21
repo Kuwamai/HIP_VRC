@@ -3,6 +3,10 @@
 ## Description
 ヒッパルコス星表にある星の位置、色、明るさのデータを元に点を描画するシェーダーです。
 
+* [Kuwamai/HipParticle](https://github.com/Kuwamai/HipParticle)
+  * 星のパーティクルに加えて星座線や星の名称を追加したパッケージを作成しました
+  * 今後はこちらを更新します
+
 ## Usage
 1. [Releases](https://github.com/Kuwamai/HIP_VRC/releases)からUnitypackageをダウンロードします
 1. Unity projectにUnitypackageをimportします
